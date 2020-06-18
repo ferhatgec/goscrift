@@ -6,8 +6,6 @@ import (
 	"os/user"
 )
 
-var test = ""
-
 // Color definitions
 var (
   Black   = Color("\033[1;30m%s\033[0m")
@@ -29,6 +27,12 @@ func Color(colorString string) func(...interface{}) string {
   return sprint
 }
 
+
+func GetInput(input string) string {
+	fmt.Print(" ")
+	fmt.Scanln(&input)
+	return input
+}
 
 func GetHostname() string {
 	name, err := os.Hostname()
@@ -65,7 +69,12 @@ func GetTerminal() {
 }
 
 func main() {
-    fmt.Println("Welcome", Purple(GetUsername()), "^-^")
-    GetTerminal()
+	var input string
+    	fmt.Println("Welcome", Purple(GetUsername()), "^-^")
+    	GetTerminal()
+    	input = GetInput(input)
+    	if input == "help" {
+    	} else if input == "printlnf" {
+    	}
 }
 
