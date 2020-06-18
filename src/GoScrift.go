@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+	"os/exec"
+    	"strings"
 )
 
 // Color definitions
@@ -17,6 +19,20 @@ var (
   Teal    = Color("\033[1;36m%s\033[0m")
   White   = Color("\033[1;37m%s\033[0m")
 )
+
+
+func ListDir() {
+    file, err := os.Open(".")
+    if err != nil {
+        fmt.Println("failed opening directory: %s", err)
+    }
+    defer file.Close()
+ 
+    list,_ := file.Readdirnames(0)
+    for _, name := range list {
+        fmt.Println(name)
+    }
+}
 
 
 func Color(colorString string) func(...interface{}) string {
@@ -68,13 +84,30 @@ func GetTerminal() {
 	fmt.Print(" " + Red("\u25B6"))
 }
 
+func execInput(input string) error {
+    input = strings.TrimSuffix(input, "\n")
+    cmd := exec.Command(input)
+    cmd.Stderr = os.Stderr
+    cmd.Stdout = os.Stdout
+    return cmd.Run()
+}
 func main() {
 	var input string
     	fmt.Println("Welcome", Purple(GetUsername()), "^-^")
-    	GetTerminal()
-    	input = GetInput(input)
-    	if input == "help" {
-    	} else if input == "printlnf" {
+    	for {
+    	    	GetTerminal()
+    		input = GetInput(input)
+    		if input == "help" {
+    		} else if input == "printlnf" {
+    		} else if input == "ls" {
+    			ListDir()
+    		} else if input == "cls" {
+    			os.Exit(3)
+    		} else if input == "fr" || input == "cd" {
+    		} else {
+    			execInput(input)
+    		}
+    		input = ""
     	}
 }
 
