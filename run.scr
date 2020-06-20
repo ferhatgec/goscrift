@@ -4,6 +4,5 @@
 *   Distributed under the terms of the MIT License.
 *# 
 
-system("go build src/GoScrift.go");
-system("./GoScrift");
+system("go build src/GoScrift.go && ./GoScrift");
 return
